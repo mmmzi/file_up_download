@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jgq.files.dao.UserFileMapper">
+    <!--    更新文件下载次数-->
+    <update id="updateDowncounts" parameterType="com.jgq.files.entity.UserFile">
+        update files
+        set downcounts=#{downcounts}
+        where id = #{id}
+    </update>
+
+    <!--    根据id删除记录-->
+    <delete id="deleteFile">
+        delete
+        from files
+        where id = #{id}
+    </delete>
+
+    <select id="findAllFiles" resultType="com.jgq.files.entity.UserFile">
+        select *
+        from files
+    </select>
+
+    <!--    根据id获取文件信息-->
+    <select id="findFileById" parameterType="integer" resultType="com.jgq.files.entity.UserFile">
+        select *
+        from files
+        where id = #{id}
+    </select>
+
+<!--    保存用户上传的文件记录-->
+    <insert id="saveFile" parameterType="com.jgq.files.entity.UserFile">
+        INSERT INTO files
+        VALUES (#{id},
+                #{oldFileName}, #{newFileName}, #{ext},
+                #{path}, #{size}, #{type}, #{isImg},
+                #{downcounts}, #{uploadTime});
+    </insert>
+</mapper>

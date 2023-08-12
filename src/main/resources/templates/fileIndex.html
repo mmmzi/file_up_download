@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户文件列表页面</title>
+</head>
+<body>
+<!--<h2>欢迎：<span th:text="${session.user.userName}"></span></h2>-->
+<h1>欢迎来到文件操作界面</h1>
+<h3>文件列表</h3>
+<table border="1px">
+    <tr>
+        <td>ID</td>
+        <td>文件原始名称</td>
+        <td>文件新的名称</td>
+        <td>文件后缀</td>
+        <td>储存路径</td>
+        <td>文件大小</td>
+        <td>类型</td>
+        <td>是否是图片</td>
+        <td>下载次数</td>
+        <td>上传时间</td>
+        <td>操作</td>
+    </tr>
+    <tr th:each="file,fileStat:${files}">
+        <td><span th:text="${file.id}"/></td>
+        <td><span th:text="${file.oldFileName}"/></td>
+        <td><span th:text="${file.newFileName}"/></td>
+        <td><span th:text="${file.ext}"/></td>
+        <td><span th:text="${file.path}"/></td>
+        <td><span th:text="${file.size}"/></td>
+        <td><span th:text="${file.type}"/></td>
+        <td>
+            <!--            <img th:if="${file.isImg}=='是'" th:src="@{/}+'/'+${file.path}+'/'+${file.newFileName}" alt="">-->
+            <img th:if="${file.isImg}=='是'" style="width: 50px;height: 50px;"
+                 th:src="${#servletContext.contextPath}+${file.path}+'/'+${file.newFileName}" alt="">
+            <span th:if="${file.isImg}!='是'" th:text="${file.isImg}"/>
+        </td>
+        <td><span th:text="${file.downcounts}"/></td>
+        <td><span th:text="${file.uploadTime}"/></td>
+        <!--        <td>1</td>-->
+        <!--        <td>aa.txt</td>-->
+        <!--        <td>uuid.txt</td>-->
+        <!--        <td>.txt</td>-->
+        <!--        <td>/files</td>-->
+        <!--        <td>1024</td>-->
+        <!--        <td>text/plain</td>-->
+        <!--        <td>否</td>-->
+        <!--        <td>11</td>-->
+        <!--        <td>2023-8-11</td>-->
+        <td>
+            <a th:href="@{/file/download(id=${file.id})}">下载</a>
+            <a th:href="@{/file/download(id=${file.id},openStyle='inline')}">在线打开</a>
+            <a th:href="@{/file/delete(id=${file.id})}">删除</a>
+        </td>
+    </tr>
+</table>
+<hr>
+<h3>上传文件</h3>
+<form th:action="@{/file/upload}" method="post" enctype="multipart/form-data">
+    <input type="file" name="newfile"> <input type="submit" value="上传文件">
+</form>
+
+</body>
+</html>
